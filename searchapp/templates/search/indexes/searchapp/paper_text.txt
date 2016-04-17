@@ -3,3 +3,4 @@
 {{ object.source }}
 {{ object.abstract }}
 {{ object.publishedYear }}
+{{object.author}}

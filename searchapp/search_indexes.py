@@ -10,6 +10,8 @@ class PaperIndex(indexes.SearchIndex, indexes.Indexable):
     source    = indexes.CharField(model_attr='source', null=True)
     abstract      = indexes.CharField(model_attr='abstract', null=True)
     publishedYear = indexes.IntegerField(model_attr='publishedYear', null=True)
+    #remove if error
+    author = indexes.CharField(model_attr='author', null=True)
 
     def get_model(self):
         return Paper
