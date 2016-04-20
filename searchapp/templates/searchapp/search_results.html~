@@ -22,7 +22,7 @@
             <div class="col-xs-12 col-sm-12 col-md-7 excerpet">
                 <h3><a href="/display_paper/{{ ids }}" title="">{{ paper.object.title }}</a></h3>
                 <p class="abstract-text">{{ paper.object.abstract }}</p>                        
-                
+                <span class="plus"><a href="#" title="page-view"><i class="glyphicon glyphicon-option-horizontal"></i></a></span>
             </div>
                {% endif %}
             {% endfor %}
