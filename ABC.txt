@@ -1,0 +1,341 @@
+package com.order.dao;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import com.order.beans.Order;
+
+
+public class OrderDAO {
+	private Connection conn;
+	private PreparedStatement pst;
+	private ResultSet rs;
+	
+	public void getDBConnection(){
+		try { 
+			Class.forName("oracle.jdbc.OracleDriver"); 
+					String url="jdbc:oracle:thin:@localhost:1521:xe"; 
+			 	    conn= DriverManager.getConnection(url,"system","manager"); 
+					System.out.println("Connected..."); 
+				}  
+				catch (ClassNotFoundException | SQLException e) { 
+					e.printStackTrace(); 
+				}  
+			 
+			 	public void close() { 
+					try{ 
+			 			conn.close(); 
+			 	} 
+			 		catch(SQLException e){ 
+			 			e.printStackTrace(); 
+			 		} 
+			 	} 
+
+			 	public void addOrder(Order od){
+			 		getDBConnection();
+			 		try { 
+			 			 		pst=conn.prepareStatement("insert into ordersub values(?,?)");  
+			 			 		pst.setInt(1,od.getOrderNo());
+			 			 		pst.setString(2,od.getStatus()); 
+			 			 		pst.executeUpdate(); 
+			 			 	} catch (SQLException e) { 
+			 			 		e.printStackTrace(); 
+			 			 	} 
+
+			 	}
+			 	public void updateOrder(Order od){
+			 		getDBConnection(); 
+			 		 	try{ 
+			 		 		pst=conn.prepareStatement("update ordersub set status=? where orderno=?"); 
+			 				pst.setString(1, od.getStatus());
+			 				pst.setInt(2, od.getOrderNo());
+			 		 		pst.executeUpdate(); 
+			 		 	} 
+			 		 	catch (SQLException e) { 
+			 		 		e.printStackTrace(); 
+			 		 } 
+		 	}
+	}
+	public List<Order> viewOrder(){ 
+		 			getDBConnection(); 
+		 			List<Order> order=new ArrayList<>(); 
+		 			try{ 
+					pst=conn.prepareStatement("select * from ordersub"); 
+		 			rs=pst.executeQuery(); 
+					while(rs.next()){ 
+		 				Order od=new Order(); 
+		 				od.setOrderNo(rs.getInt(1)); 
+		 				od.setTime(rs.getString(2)); 
+		 				od.setStatus(rs.getString(3)); 
+		 				order.add(od); 
+		 			} 
+		 
+		
+		 			} 
+		 			catch (SQLException e) { 
+		 				e.printStackTrace(); 
+		 		} 
+		 			return order;	
+		 			} 
+
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+package com.bill.dao;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.bill.beans.Bill;
+
+
+
+public class BillDAO {
+	private Connection conn;
+	private PreparedStatement pst;
+	private ResultSet rs;
+	
+	public void getDBConnection(){
+		try { 
+			Class.forName("oracle.jdbc.OracleDriver"); 
+					String url="jdbc:oracle:thin:@localhost:1521:orcl"; 
+			 	    conn= DriverManager.getConnection(url,"system","manager"); 
+					System.out.println("Connected..."); 
+				}  
+				catch (ClassNotFoundException | SQLException e) { 
+					e.printStackTrace(); 
+				}  
+			 
+			 	public void close() { 
+					try{ 
+			 			conn.close(); 
+			 	} 
+			 		catch(SQLException e){ 
+			 			e.printStackTrace(); 
+			 		} 
+			 	} 
+
+			 	public void addBill(Bill b){
+			 		getDBConnection();
+			 		try { 
+			 			 		pst=conn.prepareStatement("insert into bill values(?,?,?)"); 
+			 			 		pst.setInt(1,b.getOrderNo()); 
+			 			 		pst.setInt(2, b.getBillNo()); 
+			 			 		pst.setString(3,b.getStatus()); 
+			 			 		pst.executeUpdate(); 
+			 			 	} catch (SQLException e) { 
+			 			 		e.printStackTrace(); 
+			 			 	} 
+
+			 	}
+			 	public void updateBill(Bill b){
+			 		getDBConnection(); 
+			 		 	try{ 
+			 		 		pst=conn.prepareStatement("update bill set status=? where billno=?"); 
+			 				pst.setString(1, b.getStatus());
+			 				pst.setInt(2, b.getBillNo());
+			 		 		pst.executeUpdate(); 
+			 		 	} 
+			 		 	catch (SQLException e) { 
+			 		 		e.printStackTrace(); 
+			 		 } 
+		 	}
+	}
+	public List<Bill> viewBill(){ 
+		 			getDBConnection(); 
+		 			List<Bill> bill=new ArrayList<>(); 
+		 			try{ 
+					pst=conn.prepareStatement("select * from bill"); 
+		 			rs=pst.executeQuery(); 
+					while(rs.next()){ 
+		 				Bill b=new Bill(); 
+		 				b.setOrderNo(rs.getInt(1)); 
+		 				b.setBillNo(rs.getInt(2)); 
+		 				b.setStatus(rs.getString(3)); 
+		 				bill.add(b); 
+		 			} 
+		 			} 
+		 			catch (SQLException e) { 
+		 				e.printStackTrace(); 
+		 		} 
+		 			return bill;	
+		 			} 
+
+}
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+spackage com.bill.payment.dao;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+
+import com.bill.payment.beans.Payment;
+
+public class PaymentDAO {
+	private Connection conn;
+	private PreparedStatement pst;
+	private ResultSet rs;
+	
+	public void getDBConnection(){
+		try { 
+			Class.forName("oracle.jdbc.OracleDriver"); 
+					String url="jdbc:oracle:thin:@localhost:1521:orcl"; 
+			 	    conn= DriverManager.getConnection(url,"system","manager"); 
+					System.out.println("Connected..."); 
+				}  
+				catch (ClassNotFoundException | SQLException e) { 
+					e.printStackTrace(); 
+				}  
+			 
+			 	public void close() { 
+					try{ 
+			 			conn.close(); 
+			 	} 
+			 		catch(SQLException e){ 
+			 			e.printStackTrace(); 
+			 		} 
+			 	} 
+
+			 	public void addPayment(Payment p){
+			 		getDBConnection();
+			 		try { 
+			 			 		pst=conn.prepareStatement("insert into payment values(?,?)"); 
+			 			 		 
+			 			 		pst.setInt(1, p.getBillNo()); 
+			 			 		pst.setString(2,p.getStatus()); 
+			 			 		pst.executeUpdate(); 
+			 			 	} catch (SQLException e) { 
+			 			 		e.printStackTrace(); 
+			 			 	} 
+
+			 	}
+			 	public void updatePayment(Payment p){
+			 		getDBConnection(); 
+			 		 	try{ 
+			 		 		pst=conn.prepareStatement("update payment set status=? where billno=?"); 
+			 				pst.setString(1, p.getStatus());
+			 				pst.setInt(2, p.getBillNo());
+			 		 		pst.executeUpdate(); 
+			 		 	} 
+			 		 	catch (SQLException e) { 
+			 		 		e.printStackTrace(); 
+			 		 } 
+		 	}
+	}
+	public List<Payment> viewPayment(){ 
+		 			getDBConnection(); 
+		 			List<Payment> payment=new ArrayList<>(); 
+		 			try{ 
+					pst=conn.prepareStatement("select * from payment"); 
+		 			rs=pst.executeQuery(); 
+					while(rs.next()){ 
+		 				Payment p=new Payment();  
+		 				p.setBillNo(rs.getInt(1)); 
+		 				p.setStatus(rs.getString(2)); 
+		 				payment.add(p); 
+		 			} 
+		 			} 
+		 			catch (SQLException e) { 
+		 				e.printStackTrace(); 
+		 		} 
+		 			return payment;	
+		 			} 
+}
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+package com.ordercompletion.dao;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.order.beans.Order;
+
+public class OrderCompletionDAO {
+	private Connection conn;
+	private PreparedStatement pst;
+	private ResultSet rs;
+	
+	public void getDBConnection(){
+		try { 
+			Class.forName("oracle.jdbc.OracleDriver"); 
+					String url="jdbc:oracle:thin:@localhost:1521:orcl"; 
+			 	    conn= DriverManager.getConnection(url,"system","manager"); 
+					System.out.println("Connected..."); 
+				}  
+				catch (ClassNotFoundException | SQLException e) { 
+					e.printStackTrace(); 
+				}  
+			 
+			 	public void close() { 
+					try{ 
+			 			conn.close(); 
+			 	} 
+			 		catch(SQLException e){ 
+			 			e.printStackTrace(); 
+			 		} 
+			 	} 
+
+			 /*	public void addOrder(Order od){
+			 		getDBConnection();
+			 		try { 
+			 			 		pst=conn.prepareStatement("insert into employee values(?,?,?)"); 
+			 			 		pst.setInt(1,od.getOrderNo()); 
+			 			 		pst.setString(2, od.getTime()); 
+			 			 		pst.setString(3,od.getStatus()); 
+			 			 		pst.executeUpdate(); 
+			 			 	} catch (SQLException e) { 
+			 			 		e.printStackTrace(); 
+			 			 	} 
+
+			 	}*/
+			 	public void updateOrderCom(Order od){
+			 		getDBConnection(); 
+			 		 	try{ 
+			 		 		pst=conn.prepareStatement("update ordercom set status=? where orderno=?"); 
+			 				pst.setString(1, od.getStatus());
+			 				pst.setInt(2, od.getOrderNo());
+			 		 		pst.executeUpdate(); 
+			 		 	} 
+			 		 	catch (SQLException e) { 
+			 		 		e.printStackTrace(); 
+			 		 } 
+		 	}
+	}
+	public List<Order> viewOrderCom(){ 
+		 			getDBConnection(); 
+		 			List<Order> order=new ArrayList<>(); 
+		 			try{ 
+					pst=conn.prepareStatement("select * from ordercom"); 
+		 			rs=pst.executeQuery(); 
+					while(rs.next()){ 
+		 				Order od=new Order(); 
+		 				od.setOrderNo(rs.getInt(1));  
+		 				od.setStatus(rs.getString(2)); 
+		 				order.add(od); 
+		 			} 
+		 			} 
+		 			catch (SQLException e) { 
+		 				e.printStackTrace(); 
+		 		} 
+		 			return order;	
+		 			} 
+
+}
+
+
+
